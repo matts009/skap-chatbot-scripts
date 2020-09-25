@@ -18,11 +18,18 @@ class ScheduleSheet:
 
     CRED_PATH = 'Schedule\\credentials.json'
     TOKEN_PATH = 'Schedule\\token.pickle'
+    SCHEDULE_PATH = 'Schedule\\schedule.pickle'
 
     def __init__(self):
         self._load_creds()
         self._service = build('sheets', 'v4', credentials=self._creds)
         self._sheet = self._service.spreadsheets() # pylint: disable=no-member
+
+        if os.path.exists(ScheduleSheet.SCHEDULE_PATH):
+            with open(ScheduleSheet.SCHEDULE_PATH, 'rb') as schedule:
+                self._schedule = pickle.load(schedule)
+        else:
+            self._schedule = None
            
     def _load_creds(self):
         creds = None
@@ -43,8 +50,8 @@ class ScheduleSheet:
                 pickle.dump(creds, token)
         
         self._creds = creds
-    
-    def get_schedule(self):
+
+    def _retrieve_schedule(self):
         result = self._sheet.values().get(spreadsheetId=ScheduleSheet.SPREADSHEET_ID, range=ScheduleSheet.RANGE_NAME).execute()
         values = result.get('values', [])
 
@@ -53,4 +60,12 @@ class ScheduleSheet:
         for row in values:
             items.append(ScheduleItem(row))
 
+        with open(ScheduleSheet.SCHEDULE_PATH, 'wb') as schedule:
+            pickle.dump(items, schedule)
+
         return items
+
+    def get_schedule(self):
+        if not self._schedule:
+            self._schedule = self._retrieve_schedule()
+        return self._schedule
