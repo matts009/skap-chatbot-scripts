@@ -434,3 +434,4 @@ $RECYCLE.BIN/
 
 # skap-chatbot-scripts artifacts
 credentials.json
+token.pickle
