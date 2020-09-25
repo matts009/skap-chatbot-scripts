@@ -1,7 +1,6 @@
-from ScheduleSheet import ScheduleSheet
+from ScheduleManager import ScheduleManager
 
-ss = ScheduleSheet()
+sm = ScheduleManager()
 
-items = ss.get_schedule()
-
-print(len(items))
+sm.current()
+sm.next()

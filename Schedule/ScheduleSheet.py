@@ -14,7 +14,7 @@ class ScheduleSheet:
 
     # The ID and range of a sample spreadsheet
     SPREADSHEET_ID = '1WG7QDkulWYW8vlP0UvTqBXOGRchPr_uzETyjPKSDAL0'
-    RANGE_NAME = 'A1:F4'
+    RANGE_NAME = 'A2:F4'
 
     CRED_PATH = 'Schedule\\credentials.json'
     TOKEN_PATH = 'Schedule\\token.pickle'
@@ -22,8 +22,6 @@ class ScheduleSheet:
 
     def __init__(self):
         self._load_creds()
-        self._service = build('sheets', 'v4', credentials=self._creds)
-        self._sheet = self._service.spreadsheets() # pylint: disable=no-member
 
         if os.path.exists(ScheduleSheet.SCHEDULE_PATH):
             with open(ScheduleSheet.SCHEDULE_PATH, 'rb') as schedule:
@@ -52,7 +50,9 @@ class ScheduleSheet:
         self._creds = creds
 
     def _retrieve_schedule(self):
-        result = self._sheet.values().get(spreadsheetId=ScheduleSheet.SPREADSHEET_ID, range=ScheduleSheet.RANGE_NAME).execute()
+        service = build('sheets', 'v4', credentials=self._creds)
+        sheet = service.spreadsheets() # pylint: disable=no-member
+        result = sheet.values().get(spreadsheetId=ScheduleSheet.SPREADSHEET_ID, range=ScheduleSheet.RANGE_NAME).execute()
         values = result.get('values', [])
 
         items = []
