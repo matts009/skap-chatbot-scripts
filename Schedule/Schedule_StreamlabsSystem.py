@@ -27,15 +27,15 @@ Version = "0.7.0.0"
 #   Define Global Variables
 #---------------------------
 global Parent
-global sm
-sm = ScheduleManager()
+global schedule_manager
+schedule_manager = ScheduleManager()
 
 #---------------------------
 #   [Required] Initialize Data (Only called on load)
 #---------------------------
 def Init():
     schedule = ScheduleDownloader.download_schedule()
-    sm.load_schedule(schedule)
+    schedule_manager.load_schedule(schedule)
     return
 
 #---------------------------
@@ -43,7 +43,7 @@ def Init():
 #---------------------------
 def Execute(data): 
     if data.IsChatMessage() and len(data.Message) > 0 and data.Message[0] == "!":
-        response = sm.process_request(data.Message[1:])
+        response = schedule_manager.process_request(data.Message[1:])
 
         if response and len(response) > 0:    
             Parent.SendStreamMessage(response)
