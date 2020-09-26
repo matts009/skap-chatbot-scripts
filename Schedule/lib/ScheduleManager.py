@@ -1,15 +1,13 @@
 from datetime import datetime
 import pytz
 
-from ScheduleSheet import ScheduleSheet
 from ScheduleItem import ScheduleItem
 
 est_tz = pytz.timezone('US/Eastern')
 
 class ScheduleManager:
-    def __init__(self):
-        self._sheet = ScheduleSheet()
-        self._schedule = self._sheet.get_schedule()
+    def __init__(self, schedule):
+        self._schedule = schedule        
 
     def current(self):
         rem = self.remainder()

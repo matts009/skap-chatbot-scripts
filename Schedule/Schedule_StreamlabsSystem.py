@@ -7,7 +7,8 @@ import json
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "lib")) #point at lib folder for classes / references
 
-#from ScheduleManager import ScheduleManager # pylint: disable=import-error
+from ScheduleDownloader import ScheduleDownloader
+from ScheduleManager import ScheduleManager # pylint: disable=import-error
 
 #---------------------------
 #   [Required] Script Information
@@ -22,12 +23,14 @@ Version = "0.7.0.0"
 #   Define Global Variables
 #---------------------------
 global sm
+sm = ScheduleManager()
 
 #---------------------------
 #   [Required] Initialize Data (Only called on load)
 #---------------------------
 def Init():
-    #sm = ScheduleManager()
+    schedule = ScheduleDownloader.download_schedule()
+    sm.load_schedule(schedule)
     return
 
 #---------------------------
@@ -43,8 +46,19 @@ def Execute(data):
     #     Parent.SendStreamMessage(ScriptSettings.Response)    # Send your message to chat
     #     Parent.AddUserCooldown(ScriptName,ScriptSettings.Command,data.User,ScriptSettings.Cooldown)  # Put the command on cooldown
 
-    Parent.Log(ScriptName, repr(data))
+    #Parent.Log(ScriptName, repr(data))
+
+    if data.IsChatMessage() and data.Message == "!dj":
+        current = sm.current()
+
+        response = ""
+
+        if current:
+            response = "The current DJ is " + current.dj
+        else:
+            response = "No one is currently playing."
     
+        Parent.SendStreamMessage(response)
     return
 
 #---------------------------

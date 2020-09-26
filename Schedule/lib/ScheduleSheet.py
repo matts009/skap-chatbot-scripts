@@ -9,6 +9,7 @@ from google.auth.transport.requests import Request
 from ScheduleItem import ScheduleItem
 
 DIR_PATH = os.path.dirname(os.path.realpath(__file__))
+SCHEDULE_PATH = os.path.join(DIR_PATH, 'schedule.pickle')
 
 class ScheduleSheet:
     # If modifying these scopes, delete the file token.pickle.
@@ -24,12 +25,6 @@ class ScheduleSheet:
 
     def __init__(self):
         self._load_creds()
-
-        if os.path.exists(ScheduleSheet.SCHEDULE_PATH):
-            with open(ScheduleSheet.SCHEDULE_PATH, 'rb') as schedule:
-                self._schedule = pickle.load(schedule)
-        else:
-            self._schedule = None
            
     def _load_creds(self):
         creds = None
@@ -62,12 +57,12 @@ class ScheduleSheet:
         for row in values:
             items.append(ScheduleItem(row))
 
-        with open(ScheduleSheet.SCHEDULE_PATH, 'wb') as schedule:
-            pickle.dump(items, schedule)
-
         return items
 
     def get_schedule(self):
-        if not self._schedule:
-            self._schedule = self._retrieve_schedule()
-        return self._schedule
+        with open(ScheduleSheet.SCHEDULE_PATH, 'wb') as schedule:
+            pickle.dump(self._retrieve_schedule(), schedule)
+
+if __name__ == '__main__':
+    ss = ScheduleSheet()
+    ss.get_schedule()
