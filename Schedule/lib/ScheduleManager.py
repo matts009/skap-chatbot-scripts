@@ -6,28 +6,27 @@ from ScheduleItem import ScheduleItem
 est_tz = pytz.timezone('US/Eastern')
 
 class ScheduleManager:
-    def __init__(self, schedule):
-        self._schedule = schedule        
+    def __init__(self):        
+        pass
+    
+    def load_schedule(self, schedule):
+        self._schedule = schedule
 
     def current(self):
         rem = self.remainder()
 
         if len(rem) > 0:
-            print "Currently playing: {0}".format(rem[0].dj)
             return rem[0]
         else:
-            print "No one is currently playing."
             return None
 
     def next(self):
         rem = self.remainder()
 
         if len(rem) > 1:
-            print "Next up: {0}".format(rem[1].dj)
-        elif len(rem) == 1:
-            print "This is the last DJ of the evening."
+            return rem[1]
         else:
-            print "No one is currently playing."
+            return None
 
     def location(self):
         schedule_item = self.current()
@@ -46,3 +45,24 @@ class ScheduleManager:
     def current_time(self):
         est_dt = datetime.now(est_tz)
         print(est_dt)
+
+    def process_request(self, command):
+        response = ""
+
+        if command == "dj":
+            current = self.current()
+
+            if current:
+                response = "The current DJ is " + current.dj
+            else:
+                response = "No one is currently playing."
+        elif command == "next":
+            next = self.next()
+
+            if next:
+                response = "Next up is " + next.dj + "!"
+            else:
+                response = "This is the last DJ for the evening."
+        else:
+            response = "I'm sorry, I don't understand that command."
+        return response

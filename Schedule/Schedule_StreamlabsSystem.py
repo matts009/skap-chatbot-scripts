@@ -8,7 +8,11 @@ import json
 sys.path.append(os.path.join(os.path.dirname(__file__), "lib")) #point at lib folder for classes / references
 
 from ScheduleDownloader import ScheduleDownloader
-from ScheduleManager import ScheduleManager # pylint: disable=import-error
+from ScheduleManager import ScheduleManager 
+
+# For testing
+from DataMock import DataMock 
+from ParentMock import ParentMock
 
 #---------------------------
 #   [Required] Script Information
@@ -22,6 +26,7 @@ Version = "0.7.0.0"
 #---------------------------
 #   Define Global Variables
 #---------------------------
+global Parent
 global sm
 sm = ScheduleManager()
 
@@ -37,28 +42,11 @@ def Init():
 #   [Required] Execute Data / Process messages
 #---------------------------
 def Execute(data): 
-    # if data.IsChatMessage() and data.GetParam(0).lower() == ScriptSettings.Command and Parent.IsOnUserCooldown(ScriptName,ScriptSettings.Command,data.User):
-    #     Parent.SendStreamMessage("Time Remaining " + str(Parent.GetUserCooldownDuration(ScriptName,ScriptSettings.Command,data.User)))
+    if data.IsChatMessage() and len(data.Message) > 0 and data.Message[0] == "!":
+        response = sm.process_request(data.Message[1:])
 
-    #   Check if the propper command is used, the command is not on cooldown and the user has permission to use the command
-    # if data.IsChatMessage() and data.GetParam(0).lower() == ScriptSettings.Command and not Parent.IsOnUserCooldown(ScriptName,ScriptSettings.Command,data.User) and Parent.HasPermission(data.User,ScriptSettings.Permission,ScriptSettings.Info):
-    #     Parent.BroadcastWsEvent("EVENT_MINE","{'show':false}")
-    #     Parent.SendStreamMessage(ScriptSettings.Response)    # Send your message to chat
-    #     Parent.AddUserCooldown(ScriptName,ScriptSettings.Command,data.User,ScriptSettings.Cooldown)  # Put the command on cooldown
-
-    #Parent.Log(ScriptName, repr(data))
-
-    if data.IsChatMessage() and data.Message == "!dj":
-        current = sm.current()
-
-        response = ""
-
-        if current:
-            response = "The current DJ is " + current.dj
-        else:
-            response = "No one is currently playing."
-    
-        Parent.SendStreamMessage(response)
+        if response and len(response) > 0:    
+            Parent.SendStreamMessage(response)
     return
 
 #---------------------------
@@ -69,4 +57,10 @@ def Tick():
 
 if __name__ == '__main__':
     Init()
-    Execute(None)
+
+    data = DataMock()
+    data.Message = "!dj"
+
+    Parent = ParentMock()
+
+    Execute(data)
