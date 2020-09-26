@@ -11,8 +11,8 @@ from ScheduleDownloader import ScheduleDownloader
 from ScheduleManager import ScheduleManager 
 
 # For testing
-from DataMock import DataMock 
-from ParentMock import ParentMock
+from mock.DataMock import DataMock 
+from mock.ParentMock import ParentMock
 
 #---------------------------
 #   [Required] Script Information
