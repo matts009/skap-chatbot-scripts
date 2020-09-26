@@ -4,3 +4,5 @@ sm = ScheduleManager()
 
 sm.current()
 sm.next()
+
+sm.location()

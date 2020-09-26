@@ -8,6 +8,8 @@ from google.auth.transport.requests import Request
 
 from ScheduleItem import ScheduleItem
 
+DIR_PATH = os.path.dirname(os.path.realpath(__file__))
+
 class ScheduleSheet:
     # If modifying these scopes, delete the file token.pickle.
     SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
@@ -16,9 +18,9 @@ class ScheduleSheet:
     SPREADSHEET_ID = '1WG7QDkulWYW8vlP0UvTqBXOGRchPr_uzETyjPKSDAL0'
     RANGE_NAME = 'A2:F4'
 
-    CRED_PATH = 'Schedule\\credentials.json'
-    TOKEN_PATH = 'Schedule\\token.pickle'
-    SCHEDULE_PATH = 'Schedule\\schedule.pickle'
+    CRED_PATH = os.path.join(DIR_PATH, 'credentials.json')
+    TOKEN_PATH = os.path.join(DIR_PATH, 'token.pickle')
+    SCHEDULE_PATH = os.path.join(DIR_PATH, 'schedule.pickle')
 
     def __init__(self):
         self._load_creds()
