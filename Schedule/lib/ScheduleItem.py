@@ -14,6 +14,7 @@ class ScheduleItem:
         self.dj = sheet_row[3]
         self.location = sheet_row[4]
         self.genre = sheet_row[5]
+        self.website = sheet_row[6]
 
     def _set_start_end_ts(self, date, start_time, end_time):
         ts_fmt = '%m/%d/%y %H%M'

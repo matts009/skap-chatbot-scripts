@@ -19,7 +19,7 @@ class ScheduleSheet:
 
     # The ID and range of a sample spreadsheet
     SPREADSHEET_ID = '1WG7QDkulWYW8vlP0UvTqBXOGRchPr_uzETyjPKSDAL0'
-    RANGE_NAME = 'A2:F4'
+    RANGE_NAME = 'A2:G4'
 
     CRED_PATH = os.path.join(DIR_PATH, 'credentials.json')
     TOKEN_PATH = os.path.join(DIR_PATH, 'token.pickle')

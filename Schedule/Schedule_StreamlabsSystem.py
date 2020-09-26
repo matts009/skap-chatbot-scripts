@@ -59,7 +59,7 @@ if __name__ == '__main__':
     Init()
 
     data = DataMock()
-    data.Message = "!dj"
+    data.Message = "!next"
 
     Parent = ParentMock()
 
