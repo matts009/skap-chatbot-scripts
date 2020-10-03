@@ -8,7 +8,8 @@ import json
 sys.path.append(os.path.join(os.path.dirname(__file__), "lib")) #point at lib folder for classes / references
 
 from ConfigDownloader import ConfigDownloader
-from ScheduleManager import ScheduleManager 
+from MessagesManager import MessagesManager
+from ScheduleManager import ScheduleManager
 
 # For testing
 from mock.DataMock import DataMock 
@@ -31,7 +32,8 @@ global Parent
 global schedule_manager
 schedule_manager = ScheduleManager()
 
-messages = []
+global messages_manager
+messages_manager = MessagesManager(1800)
 
 #---------------------------
 #   [Required] Initialize Data (Only called on load)
@@ -40,8 +42,8 @@ def Init():
     schedule = ConfigDownloader.download_schedule()
     schedule_manager.load_schedule(schedule)
 
-    global messages
     messages = ConfigDownloader.download_messages()
+    messages_manager.load_messages(messages)    
     return
 
 #---------------------------
@@ -59,7 +61,9 @@ def Execute(data):
 #   [Required] Tick method (Gets called during every iteration even when there is no incoming data)
 #---------------------------
 def Tick():
-    print("There are {0} messages".format(len(messages)))
+    if messages_manager.should_send_message():
+        message = messages_manager.get_next_message()
+        Parent.SendStreamMessage(message)
     return
 
 if __name__ == '__main__':
