@@ -3,6 +3,7 @@ import pickle
 
 DIR_PATH = os.path.dirname(os.path.realpath(__file__))
 SCHEDULE_PATH = os.path.join(DIR_PATH, 'schedule.pickle')
+MESSAGES_PATH = os.path.join(DIR_PATH, 'messages.pickle')
 
 class ScheduleDownloader:
     @staticmethod
