@@ -13,10 +13,12 @@ class ScheduleManager:
         self._schedule = schedule
 
     def current(self):
-        rem = self.remainder()
+        #rem = self.remainder()
+        now = datetime.now(est_tz)
+        cur = filter(lambda x: now >= x.start_ts and now <= x.end_ts, self._schedule)
 
-        if len(rem) > 0:
-            return rem[0]
+        if len(cur) > 0:
+            return cur[0]
         else:
             return None
 
