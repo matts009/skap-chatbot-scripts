@@ -32,18 +32,18 @@ class Sheet(object):
         creds = None
         
         # use a token.pickle file if it exists
-        if os.path.exists(Sheet.TOKEN_PATH):
-            with open(Sheet.TOKEN_PATH, 'rb') as token:
+        if os.path.exists(self.TOKEN_PATH):
+            with open(self.TOKEN_PATH, 'rb') as token:
                     creds = pickle.load(token)
         
         if not creds or not creds.valid:
             if creds and creds.expired and creds.refresh_token:
                 creds.refresh(Request())
             else:
-                flow = InstalledAppFlow.from_client_secrets_file(Sheet.CRED_PATH, Sheet.SCOPES)
+                flow = InstalledAppFlow.from_client_secrets_file(self.CRED_PATH, self.SCOPES)
                 creds = flow.run_local_server(port=0)
             # Save the credentials for the next run
-            with open(Sheet.TOKEN_PATH, 'wb') as token:
+            with open(self.TOKEN_PATH, 'wb') as token:
                 pickle.dump(creds, token)
         
         self._creds = creds
