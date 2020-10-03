@@ -57,6 +57,8 @@ class ScheduleManager:
                 resp_fmt = "{0} ({1}) playing {2} until {3}!"
                 end_time = current.end_ts.strftime("%I:%M%p %Z").lstrip('0')
                 response = resp_fmt.format(current.dj, current.location, current.genre, end_time)
+            else:
+                response = "No one is currently playing."
         elif command == "next":
             next = self.next()
 
