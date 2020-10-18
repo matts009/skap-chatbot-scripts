@@ -19,7 +19,8 @@ class ScheduleManager:
             if now >= dj.start_ts and now <= dj.end_ts:
                 return dj
             else:
-                return None
+                pass
+        return None
 
     def next(self):
         now = datetime.now(est_tz)
