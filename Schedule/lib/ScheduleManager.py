@@ -1,5 +1,6 @@
 from datetime import datetime
 import pytz
+import random
 
 from ScheduleItem import ScheduleItem
 
@@ -16,7 +17,7 @@ class ScheduleManager:
         now = datetime.now(est_tz)
 
         for dj in self._schedule:
-            if now >= dj.start_ts and now <= dj.end_ts:
+            if now >= dj.start_ts and (not dj.end_ts or (dj.end_ts and now <= dj.end_ts)):
                 return dj
             else:
                 pass
@@ -56,7 +57,12 @@ class ScheduleManager:
 
             if current:
                 resp_fmt = "{0} ({1}) playing {2} until {3}!"
-                end_time = current.end_ts.strftime("%I:%M%p %Z").lstrip('0')
+                end_time = None
+                if current.end_ts:
+                    end_time = current.end_ts.strftime("%I:%M%p %Z").lstrip('0')
+                else:
+                    resp = ['your mom comes home', 'they damn well please', 'the Crown is empty']
+                    end_time = random.choice(resp)
                 response = resp_fmt.format(current.dj, current.location, current.genre, end_time)
             else:
                 response = "No one is currently playing."

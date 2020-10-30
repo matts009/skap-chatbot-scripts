@@ -14,12 +14,18 @@ class ScheduleItem:
         self.dj = sheet_row[3]
         self.location = sheet_row[4]
         self.genre = sheet_row[5]
-        self.website = sheet_row[6]
+
+        try:
+            self.website = sheet_row[6]
+        except:
+            self.website = None
 
     def _set_start_end_ts(self, date, start_time, end_time):
         ts_fmt = '%m/%d/%y %H%M'
 
         self.start_ts = est_tz.localize(datetime.strptime('{0} {1}'.format(date, start_time), ts_fmt))
-        self.end_ts = est_tz.localize(datetime.strptime('{0} {1}'.format(date, end_time), ts_fmt))
-
+        if len(end_time) > 0:
+            self.end_ts = est_tz.localize(datetime.strptime('{0} {1}'.format(date, end_time), ts_fmt))
+        else:
+            self.end_ts = None
         

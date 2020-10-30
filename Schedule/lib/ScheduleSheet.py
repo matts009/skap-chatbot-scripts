@@ -14,7 +14,7 @@ DIR_PATH = os.path.dirname(os.path.realpath(__file__))
 class ScheduleSheet(Sheet):
 
     def __init__(self):
-        super(ScheduleSheet, self).__init__('Schedule!A2:G4')
+        super(ScheduleSheet, self).__init__("'Schedule'!A2:G19")
 
     SCHEDULE_PATH = os.path.join(DIR_PATH, 'schedule.pickle')
 
